@@ -123,12 +123,20 @@
               <br/>
               <br/>
               <ul>
-               <% uniquePartNumbers.forEach(item => { %>
-                 <li>
-                   PART_NO: <%= item.PART_NO %>,
-                   PSBUILDING_NAMES: <%= item.PSBUILDING_NAMES.join(", ") %>
-                 </li>
-               <% }); %>
+               <% uniquePartNumbers.sort((a, b) => a.PART_NO - b.PART_NO).forEach((item, index) => { %>
+                  <div class="card bg-light-subtle mt-4">
+                    <div class="card-body">
+                      <div class="text-section">
+                        <h5 class="card-title fw-bold" style="color:#000">PART_NO: <%= item.PART_NO %></h5>
+                        <p class="card-text" style="color: #000;">
+                          PSBUILDING_NAMES: <%= item.PSBUILDING_NAMES.join(", ") %>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+                <br/>
+                
              </ul>
               <br/>
               <br/>
