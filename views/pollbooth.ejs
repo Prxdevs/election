@@ -116,6 +116,23 @@
                       <a style="padding:5px" href="?page=<%= totalPages %>">Last</a>
                   <% } %>
               </div>
+
+
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <ul>
+               <% uniquePartNumbers.forEach(item => { %>
+                 <li>
+                   PART_NO: <%= item.PART_NO %>,
+                   PSBUILDING_NAMES: <%= item.PSBUILDING_NAMES.join(", ") %>
+                 </li>
+               <% }); %>
+             </ul>
+              <br/>
+              <br/>
+              <br/>
                 
 
             <div

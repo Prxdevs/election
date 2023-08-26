@@ -61,6 +61,23 @@ router.get(`/prx`, async (req, res) => {
 	const displayRange = 5; // Adjust this value as needed
 	const startPage = Math.max(page - Math.floor(displayRange / 2), 1);
 	const endPage = Math.min(startPage + displayRange - 1, totalPages);
+
+	const uniquePartNumbers = await Para.aggregate([
+		{
+		  $group: {
+			_id: "$PART_NO",
+			PSBUILDING_NAMES: { $addToSet: "$PSBUILDING_NAME_EN" },
+		  },
+		},
+		{
+		  $project: {
+			_id: 0,
+			PART_NO: "$_id",
+			PSBUILDING_NAMES: 1,
+		  },
+		},
+	  ]);
+
 	
 
 	res.render("pollbooth", {
@@ -68,6 +85,7 @@ router.get(`/prx`, async (req, res) => {
 		para:para,
 		// prxwy:prxwy,
 		cart: req.session.cart,
+		uniquePartNumbers: uniquePartNumbers,
 		sessionId: req.session._id,
 		anAdmin: req.session.anAdmin,
 		totalPages: Math.ceil(count/limit),
