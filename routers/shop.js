@@ -71,12 +71,12 @@ router.get(`/prx`, async (req, res) => {
 			totalMembers: { $sum: 1 },
 			femaleCount: {
 			  $sum: {
-				$cond: [{ $eq: ["$Gender", "F"] }, 1, 0]
+				$cond: [{ $eq: ["$GENDER", "F"] }, 1, 0]
 			  }
 			},
 			maleCount: {
 			  $sum: {
-				$cond: [{ $eq: ["$Gender", "M"] }, 1, 0]
+				$cond: [{ $eq: ["$GENDER", "M"] }, 1, 0]
 			  }
 			}
 		  },
@@ -93,7 +93,7 @@ router.get(`/prx`, async (req, res) => {
 		},
 	  ]);
 	  
-
+	  
 	
 
 	res.render("pollbooth", {
