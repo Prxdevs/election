@@ -62,11 +62,23 @@ router.get(`/prx`, async (req, res) => {
 	const startPage = Math.max(page - Math.floor(displayRange / 2), 1);
 	const endPage = Math.min(startPage + displayRange - 1, totalPages);
 
+	// for not repeating part_no
 	const uniquePartNumbers = await Para.aggregate([
 		{
 		  $group: {
 			_id: "$PART_NO",
 			PSBUILDING_NAMES: { $addToSet: "$PSBUILDING_NAME_EN" },
+			totalMembers: { $sum: 1 },
+			femaleCount: {
+			  $sum: {
+				$cond: [{ $eq: ["$Gender", "F"] }, 1, 0]
+			  }
+			},
+			maleCount: {
+			  $sum: {
+				$cond: [{ $eq: ["$Gender", "M"] }, 1, 0]
+			  }
+			}
 		  },
 		},
 		{
@@ -74,9 +86,13 @@ router.get(`/prx`, async (req, res) => {
 			_id: 0,
 			PART_NO: "$_id",
 			PSBUILDING_NAMES: 1,
+			totalMembers: 1,
+			femaleCount: 1,
+			maleCount: 1
 		  },
 		},
 	  ]);
+	  
 
 	
 
@@ -97,6 +113,27 @@ router.get(`/prx`, async (req, res) => {
     endPage: endPage
 	});
 });
+
+
+router.get("/part-details", async (req, res) => {
+	try {
+	  const partNo = parseInt(req.query.partNo);
+	  const name = req.query.name;
+  
+	  const totalMembers = await Para.countDocuments({ PART_NO: partNo });
+  
+	  res.render("part-details", {
+		partNo: partNo,
+		name: name,
+		totalMembers: totalMembers
+	  });
+	} catch (error) {
+	  console.error("Error:", error); // Log the actual error
+	  console.error("PartNo:", req.query.partNo); // Log the partNo
+	  console.error("Name:", req.query.name); // Log the name
+	  res.status(500).send("Internal Server Error");
+	}
+  });
 
 
 // router.get(`/`, async (req, res) => {

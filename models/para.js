@@ -77,6 +77,10 @@ const paraSchema = mongoose.Schema(
 		RLN_L_NM_EN:{
 			type:String,
 		},
+		Gender: {
+			type: String,
+			enum: ["F", "M"], // Add enum validation for gender values
+		  },
 		
 		created_at: {
 			type: Date,

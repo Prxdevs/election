@@ -123,18 +123,43 @@
               <br/>
               <br/>
               <ul>
-               <% uniquePartNumbers.sort((a, b) => a.PART_NO - b.PART_NO).forEach((item, index) => { %>
-                  <div class="card bg-light-subtle mt-4">
+               <!-- <% uniquePartNumbers.sort((a, b) => a.PART_NO - b.PART_NO).forEach((item, index) => { %>
+                  <div class="card bg-light-subtle mt-4 part-card" data-part-no="<%= item.PART_NO %>" data-name="<%= item.AC_NAME_EN %>">
                     <div class="card-body">
                       <div class="text-section">
                         <h5 class="card-title fw-bold" style="color:#000">PART_NO: <%= item.PART_NO %></h5>
                         <p class="card-text" style="color: #000;">
                           PSBUILDING_NAMES: <%= item.PSBUILDING_NAMES.join(", ") %>
                         </p>
+                        <p class="card-text" style="color: #000;">
+                          Total Members: <%= item.totalMembers %>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %> -->
+                <% uniquePartNumbers.sort((a, b) => a.PART_NO - b.PART_NO).forEach((item, index) => { %>
+                  <div class="card bg-light-subtle mt-4 part-card" data-part-no="<%= item.PART_NO %>" data-name="<%= item.AC_NAME_EN %>">
+                    <div class="card-body">
+                      <div class="text-section">
+                        <h5 class="card-title fw-bold" style="color:#000">PART_NO: <%= item.PART_NO %></h5>
+                        <p class="card-text" style="color: #000;">
+                          PSBUILDING_NAMES: <%= item.PSBUILDING_NAMES.join(", ") %>
+                        </p>
+                        <p class="card-text" style="color: #000;">
+                          Total Members: <%= item.totalMembers %>
+                        </p>
+                        <p class="card-text" style="color: #000;">
+                          Female Members: <%= item.femaleCount %>
+                        </p>
+                        <p class="card-text" style="color: #000;">
+                          Male Members: <%= item.maleCount %>
+                        </p>
                       </div>
                     </div>
                   </div>
                 <% }) %>
+                
                 <br/>
                 
              </ul>
