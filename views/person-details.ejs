@@ -7,6 +7,7 @@
    <!-- /Added by HTTrack -->
    
    <%- include('component/head.ejs') -%>
+   
 
    <body
    
@@ -78,45 +79,71 @@
                class=clear></div>
 
 
-               <h1>Part Details</h1>
+               <h1>Person Details</h1>
                <% documents.forEach((document) => { %>
-                  <div class="card bg-light-subtle mt-4 part-card"  >
-                     <div class="card-body">
-                       <div class="text-section">
-                         <a href="/person-details?id=<%= document._id %>" class="card-title fw-bold" style="color:#000">
-                            
-                            <h5 class="card-title fw-bold" style="color:#000">
-                              <%= document.FM_NAME_EN %>&nbsp;<%= document.LASTNAME_EN %>&nbsp;-<%= document.RLN_TYPE %>- &nbsp;<%= document.RLN_FM_NM_EN %>&nbsp;<%= document.RLN_L_NM_EN %>
                               
-                           </h5>
-                         </a>
-                        
-                         <p class="card-text" style="color: #000;">
-                           <%= document.GENDER %>-<%= document.AGE %>
-                         </p>
-                         <p class="card-text" style="color: #000;">
-                           Number: <%= document.MOBILE_NO ? document.MOBILE_NO : 'NoNumber' %>
-                         </p>
-                         
-                       </div>
-                     </div>
-                   </div>
+                <table>
+                  <tr >
+                     <th colspan="2" class="image-cell" style="text-align: right;" >
+                       <!-- Place your image source here -->
+                       <img src="https://cdn.pixabay.com/photo/2013/07/13/12/07/avatar-159236_1280.png" style="width: 100px; " alt="Image">
+                     </th>
+                   </tr>
+
+                    <tr>
+                      <td>Const No.</td>
+                      <td><%= document.AC_NO %> </td>
+                    </tr>
+                    <tr>
+                      <td>Booth</td>
+                      <td><%= document.PART_NO %> </td>
+                    </tr>
+                    <tr>
+                      <td>SrNo</td>
+                      <td><%= document.PART_NO %> </td>
+                    </tr>
+                    <tr>
+                      <td>Name</td>
+                      <td><%= document.FM_NAME_EN %>&nbsp;<%= document.LASTNAME_EN %>&nbsp;-<%= document.RLN_TYPE %>- &nbsp;<%= document.RLN_FM_NM_EN %>&nbsp;<%= document.RLN_L_NM_EN %> </td>
+                    </tr>
+                    <tr>
+                      <td>Address</td>
+                      <td><%= document.AC_NO %>/<%= document.PART_NO %>/<%= document.PART_NO %>/<%= document.SECTION_NAME_EN %> </td>
+                    </tr>
+                    <tr>
+                      <td>Booth Name</td>
+                      <td><%= document.PART_NO %>-<%= document.PSBUILDING_NAME_EN %> </td>
+                    </tr>
+                    <tr>
+                      <td>Sex-Age</td>
+                      <td><%= document.GENDER %>/<%= document.AGE %> </td>
+                    </tr>
+                    <tr>
+                      <td>Mob No</td>
+                      <td><%= document.MOBILE_NO %> </td>
+                    </tr>
+                   
+                    
                   
+                    <tr>
+                     <td>House No</td>
+                     <td><%= document.c_HOUSE_NO %> </td>
+                   </tr>
+                   <tr>
+                     <td>Card No</td>
+                     <td><%= document.EPIC_NO %> </td>
+                   </tr>
+                 
+         
+                   <tr>
+                     <td>DOB</td>
+                     <td><%= document.DOB %> </td>
+                   </tr>
+                 
+
+                    
+                </table>
                 <% }) %>
-            
-<!-- Pagination Controls -->
-<div class="pagination">
-   <% if (currentPage > 1) { %>
-     <a href="/part-details?part=<%= req.query.part %>&page=<%= currentPage - 1 %>">&laquo; Previous</a>
-   <% } %>
-   &nbsp;&nbsp;&nbsp;
-   <p> <%= currentPage %> of <%= totalPages %></p>
-   &nbsp;&nbsp;&nbsp;
-   <% if (documents.length === itemsPerPage) { %>
-     <a href="/part-details?part=<%= req.query.part %>&page=<%= currentPage + 1 %>">Next &raquo;</a>
-   <% } %>
- </div>
- 
             
 
                 

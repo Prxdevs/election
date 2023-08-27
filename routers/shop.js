@@ -116,24 +116,37 @@ router.get(`/prx`, async (req, res) => {
 
 
 router.get("/part-details", async (req, res) => {
-	try {
-	  const partNo = parseInt(req.query.partNo);
-	  const name = req.query.name;
+	const partNo = req.query.part; // Retrieve the 'part' parameter from the URL query
+	const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+	const itemsPerPage = 10;
+		try {
+			const skip = (page - 1) * itemsPerPage;
+			const documents = await Para.find({ PART_NO: partNo })
+			.skip(skip)
+			.limit(itemsPerPage);
+			const totalDocuments = await Para.countDocuments({ PART_NO: partNo });
+    const totalPages = Math.ceil(totalDocuments / itemsPerPage);
+
+			res.render('part-details',{ documents,req,totalPages , currentPage: page, itemsPerPage});
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+			res.status(500).send('An error occurred');
+		  }
   
-	  const totalMembers = await Para.countDocuments({ PART_NO: partNo });
+});
+
+router.get("/person-details", async (req, res) => {
+	const id = req.query.id;  // Retrieve the 'part' parameter from the URL query
+
+		try {
+			const documents = await Para.find({ _id: id	 })
+			res.render('person-details',{ documents:documents});
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+			res.status(500).send('An error occurred');
+		  }
   
-	  res.render("part-details", {
-		partNo: partNo,
-		name: name,
-		totalMembers: totalMembers
-	  });
-	} catch (error) {
-	  console.error("Error:", error); // Log the actual error
-	  console.error("PartNo:", req.query.partNo); // Log the partNo
-	  console.error("Name:", req.query.name); // Log the name
-	  res.status(500).send("Internal Server Error");
-	}
-  });
+});
 
 
 // router.get(`/`, async (req, res) => {
