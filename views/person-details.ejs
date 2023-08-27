@@ -79,15 +79,16 @@
                class=clear></div>
 
 
-               <h1>Person Details</h1>
+              
                <% documents.forEach((document) => { %>
                               
                 <table>
                   <tr >
-                     <th colspan="2" class="image-cell" style="text-align: right;" >
+                     <td ><h1 >Person Details</h1></td>
+                     <td colspan="2" class="image-cell" style="text-align: right;" >
                        <!-- Place your image source here -->
                        <img src="https://cdn.pixabay.com/photo/2013/07/13/12/07/avatar-159236_1280.png" style="width: 100px; " alt="Image">
-                     </th>
+                     </td>
                    </tr>
 
                     <tr>
@@ -100,7 +101,7 @@
                     </tr>
                     <tr>
                       <td>SrNo</td>
-                      <td><%= document.PART_NO %> </td>
+                      <td><%= req.query.Sr %></td>
                     </tr>
                     <tr>
                       <td>Name</td>
@@ -108,7 +109,7 @@
                     </tr>
                     <tr>
                       <td>Address</td>
-                      <td><%= document.AC_NO %>/<%= document.PART_NO %>/<%= document.PART_NO %>/<%= document.SECTION_NAME_EN %> </td>
+                      <td><%= document.AC_NO %>/<%= document.PART_NO %>/<%= req.query.Sr %>/<%= document.SECTION_NAME_EN %> </td>
                     </tr>
                     <tr>
                       <td>Booth Name</td>

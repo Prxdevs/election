@@ -77,20 +77,27 @@
             <div
                class=clear></div>
 
-
+               
+          
                <h1>Part Details</h1>
-               <% documents.forEach((document) => { %>
+               
+
+               <br/>
+               <input type="text" id="searchBar"  placeholder="Search here" />
+               <br/>
+               <% documents.forEach((document,index) => { %>
                   <div class="card bg-light-subtle mt-4 part-card"  >
                      <div class="card-body">
                        <div class="text-section">
-                         <a href="/person-details?id=<%= document._id %>" class="card-title fw-bold" style="color:#000">
+                         <a href="/person-details?id=<%= document._id %>&Sr=<%= index + 1 %>" class="card-title fw-bold" style="color:#000">
                             
                             <h5 class="card-title fw-bold" style="color:#000">
-                              <%= document.FM_NAME_EN %>&nbsp;<%= document.LASTNAME_EN %>&nbsp;-<%= document.RLN_TYPE %>- &nbsp;<%= document.RLN_FM_NM_EN %>&nbsp;<%= document.RLN_L_NM_EN %>
+                              <%= index + 1 %>. <%= document.FM_NAME_EN %>&nbsp;<%= document.LASTNAME_EN %>&nbsp;-<%= document.RLN_TYPE %>- &nbsp;<%= document.RLN_FM_NM_EN %>&nbsp;<%= document.RLN_L_NM_EN %>
                               
                            </h5>
                          </a>
-                        
+
+
                          <p class="card-text" style="color: #000;">
                            <%= document.GENDER %>-<%= document.AGE %>
                          </p>
@@ -139,7 +146,28 @@
                <%- include('component/footer.ejs') -%>
          </main>
       </div>
-      
+      <script>
+         // Add an event listener to the search bar input
+         const searchBar = document.getElementById('searchBar');
+         searchBar.addEventListener('input', filterData);
+       
+         function filterData() {
+           const searchValue = searchBar.value.toLowerCase();
+           const cards = document.querySelectorAll('.part-card');
+       
+           cards.forEach(card => {
+             const cardTitle = card.querySelector('.card-title');
+             if (cardTitle.textContent.toLowerCase().includes(searchValue)) {
+               card.style.display = 'block';
+             } else {
+               card.style.display = 'none';
+             }
+           });
+         }
+
+
+       </script>
+       ]
       <script type=text/html id=wpb-modifications></script> <script src=wp-content/cache/minify/3b479.js></script> <script id=contact-form-7-js-extra>var wpcf7 = {"api":{"root":"https:\/\/webredox.net\/demo\/wp\/stukram\/dark\/wp-json\/","namespace":"contact-form-7\/v1"},"cached":"1"};</script> <script src=wp-content/cache/minify/52358.js></script> <script id=wpb_composer_front_js-js-extra>var vcData = {"currentTheme":{"slug":"stukram"}};</script> <script src=wp-content/cache/minify/a266d.js></script> 
    </body>
    <!-- Mirrored from webredox.net/demo/wp/stukram/dark/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 26 Jun 2022 10:54:28 GMT -->

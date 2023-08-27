@@ -140,7 +140,7 @@ router.get("/person-details", async (req, res) => {
 
 		try {
 			const documents = await Para.find({ _id: id	 })
-			res.render('person-details',{ documents:documents});
+			res.render('person-details',{ documents:documents,req});
 		  } catch (error) {
 			console.error('Error fetching data:', error);
 			res.status(500).send('An error occurred');
