@@ -32,7 +32,8 @@ router.get(`/`, async (req, res) => {
 		anAdmin: req.session.anAdmin,
 	});
 });
-router.get(`/prx`, async (req, res) => {
+
+router.get(`/boothlist`, async (req, res) => {
 	const category = await Category.find();
 	// const para = await Para.find();
 	// const prxwy = await Prxwy.find();
@@ -115,6 +116,90 @@ router.get(`/prx`, async (req, res) => {
 });
 
 
+router.get(`/voter`, async (req, res) => {
+	const category = await Category.find();
+	// const para = await Para.find();
+	// const prxwy = await Prxwy.find();
+
+
+	var page = 1;
+	if(req.query.page){
+		page = req.query.page;
+	}
+
+	
+	const limit = 10;
+	
+
+	const para = await Para.find()
+	.limit(limit * 1)
+	.skip((page-1)* limit)
+	.exec();
+
+	const count = await Para.find({
+
+	}).countDocuments();
+
+		
+	const totalPages = Math.ceil(count / limit);
+	const displayRange = 5; // Adjust this value as needed
+	const startPage = Math.max(page - Math.floor(displayRange / 2), 1);
+	const endPage = Math.min(startPage + displayRange - 1, totalPages);
+
+	// for not repeating part_no
+	const uniquePartNumbers = await Para.aggregate([
+		{
+		  $group: {
+			_id: "$PART_NO",
+			PSBUILDING_NAMES: { $addToSet: "$PSBUILDING_NAME_EN" },
+			totalMembers: { $sum: 1 },
+			femaleCount: {
+			  $sum: {
+				$cond: [{ $eq: ["$GENDER", "F"] }, 1, 0]
+			  }
+			},
+			maleCount: {
+			  $sum: {
+				$cond: [{ $eq: ["$GENDER", "M"] }, 1, 0]
+			  }
+			}
+		  },
+		},
+		{
+		  $project: {
+			_id: 0,
+			PART_NO: "$_id",
+			PSBUILDING_NAMES: 1,
+			totalMembers: 1,
+			femaleCount: 1,
+			maleCount: 1
+		  },
+		},
+	  ]);
+	  
+	  
+	
+
+	res.render("voter", {
+		category: category,
+		para:para,
+		// prxwy:prxwy,
+		cart: req.session.cart,
+		uniquePartNumbers: uniquePartNumbers,
+		sessionId: req.session._id,
+		anAdmin: req.session.anAdmin,
+		totalPages: Math.ceil(count/limit),
+		currentPage: page,
+		previousPage: page-1,
+		nextPage: page+1,
+		displayRange: displayRange,
+    startPage: startPage,
+    endPage: endPage
+	});
+});
+
+
+
 router.get("/part-details", async (req, res) => {
 	const partNo = req.query.part; // Retrieve the 'part' parameter from the URL query
 	const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
@@ -141,6 +226,19 @@ router.get("/person-details", async (req, res) => {
 		try {
 			const documents = await Para.find({ _id: id	 })
 			res.render('person-details',{ documents:documents,req});
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+			res.status(500).send('An error occurred');
+		  }
+  
+});
+
+router.get("/buttons", async (req, res) => {
+	const id = req.query.id;  // Retrieve the 'part' parameter from the URL query
+
+		try {
+			const documents = await Para.find({ _id: id	 })
+			res.render('homepage',{ documents:documents,req});
 		  } catch (error) {
 			console.error('Error fetching data:', error);
 			res.status(500).send('An error occurred');

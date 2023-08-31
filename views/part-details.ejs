@@ -16,8 +16,6 @@
             class=black-version>
             <%- include('component/header.ejs') -%>
 
-       
-
             <div
             class=clear></div>
 
@@ -76,14 +74,23 @@
                class=clear></div>
             <div
                class=clear></div>
-
                
-          
-               <h1>Part Details</h1>
-               
+               <style>
+                  .sbn{
+                     outline: 0;
+                     width: 100%;
+                     line-height: 42px;
+                     padding: 0 16px;
+                     background-color: rgba(255, 255, 255, 0.8);
+                     color: #212121;
+                     border: 0;
+                     -webkit-border-radius: 4px 0 0 4px;
+                     border-radius: 4px;
+                  }
+               </style>
 
                <br/>
-               <input type="text" id="searchBar"  placeholder="Search here" />
+               <input type="text" id="searchBar" class="sbn" placeholder="Search here" />
                <br/>
                <% documents.forEach((document,index) => { %>
                   <div class="card bg-light-subtle mt-4 part-card"  >
