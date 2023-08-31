@@ -94,10 +94,13 @@ router.get(`/boothlist`, async (req, res) => {
 		},
 	  ]);
 	  
-	  
+	
+			// res.render('person-details',{ documents:documents,req});
+		
 	
 
 	res.render("pollbooth", {
+		
 		category: category,
 		para:para,
 		// prxwy:prxwy,
@@ -177,8 +180,7 @@ router.get(`/voter`, async (req, res) => {
 		},
 	  ]);
 	  
-	  
-	
+		
 
 	res.render("voter", {
 		category: category,
@@ -198,7 +200,36 @@ router.get(`/voter`, async (req, res) => {
 	});
 });
 
-
+router.get(`/voter/details`, async (req, res) => {
+	
+	const partNo = req.query.part;
+	const page = parseInt(req.query.page) || 1;
+	const itemsPerPage = 10;
+  
+	try {
+	  const skip = (page - 1) * itemsPerPage;
+	  const documents = await Para.find({ PART_NO: partNo })
+		.skip(skip)
+		.limit(itemsPerPage);
+	  const totalDocuments = await Para.countDocuments({ PART_NO: partNo });
+	  const totalPages = Math.ceil(totalDocuments / itemsPerPage);
+  
+	  // Render the details content as HTML
+	  const detailsHtml = res.render("part-details", {
+		documents: documents,
+		req: req,
+		totalPages: totalPages,
+		currentPage: page,
+		itemsPerPage: itemsPerPage,
+	  });
+  
+	  res.send(detailsHtml); // Send the HTML response
+	} catch (error) {
+	  console.error("Error fetching data:", error);
+	  res.status(500).send("An error occurred");
+	}
+  });
+  
 
 router.get("/part-details", async (req, res) => {
 	const partNo = req.query.part; // Retrieve the 'part' parameter from the URL query
@@ -247,70 +278,10 @@ router.get("/buttons", async (req, res) => {
 });
 
 
-// router.get(`/`, async (req, res) => {
-// 	// const product = await Product.find().limit(8);
-// 	const category = await Category.find();
-// 	const prxwy = await Prxwy.find();
-//     // const subcategory = await subCategory.find().select("name");
-// 	res.render("home", {
-// 		// product: product,
-//         // subcategory: subcategory,
-// 		category: category,
-// 		prxwy:prxwy,
-// 		cart: req.session.cart,
-// 		sessionId: req.session._id,
-// 		anAdmin: req.session.anAdmin,
-// 	});
-// });
 
 
 
 
-router.get("/index",  async (req, res) => {
-	const category = await Category.findOne({ _id: req.query.id });
-	const subcategory = await subCategory.find({ category: category });
-	const product = await Product.find({subcategory:subcategory})
-	res.render("index", {
-		category: category,
-		subcategory: subcategory,
-		product: product
-	});
- console.log(subcategory);
- console.log(product);
-});
-
-
-router.get(`/:name`, async (req, res, next) => {
-	const pathName = req.params.name;
-	const subcategoryId = await subCategory.findOne({ name: pathName });
-	
-	if (!subcategoryId) {
-		next();
-		
-	} 
-    else {
-		const subcategory = await subCategory.find().select("name");
-        // const subcategory = await subCategory.find({ category: categoryId._id });
-		const product = await Product.find({subcategory: subcategoryId._id});
-		
-		
-		res.render("index2", {
-            subcategoryname: req.params.name,
-			// category: category,
-            subcategory: subcategory,
-			product:product,
-          
-			cart: req.session.cart,
-			sessionId: req.session._id,
-			anAdmin: req.session.anAdmin,
-			pathName: pathName,
-			
-		});
-		console.log(product)
-        
-	}
-    
-});
 
 
 router.get(`/contact`, async (req, res) => {

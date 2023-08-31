@@ -7,6 +7,7 @@
    <!-- /Added by HTTrack -->
    
    <%- include('component/head.ejs') -%>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
    <body
    
@@ -93,31 +94,8 @@
                 </select>
          
                 <br/>
-              
-                <!-- <% uniquePartNumbers.sort((a, b) => a.PART_NO - b.PART_NO).forEach((item, index) => { %>
-                  
-                  <div class="card bg-light-subtle mt-4 part-card" data-part-no="<%= item.PART_NO %>" data-name="<%= item.AC_NAME_EN %>">
-                    <div class="card-body">
-                      <div class="text-section">
-                        <a href="/part-details?part=<%= item.PART_NO %>" class="card-title fw-bold" style="color:#000">
-                           
-                           <h5 class="card-title tt fw-bold" style="color:#000">
-                              <%= item.PART_NO %>, <%= item.PSBUILDING_NAMES.join(", ") %></h5>
-                        </a>
-                       
-                        <p class="card-text" style="color: #000;">
-                          Total Members: <%= item.totalMembers %>
-                        </p>
-                        <p class="card-text" style="color: #000;">
-                          Female Members: <%= item.femaleCount %>
-                        </p>
-                        <p class="card-text" style="color: #000;">
-                          Male Members: <%= item.maleCount %>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                <% }) %> -->
+                <div id="detailsContainer"></div>
+     
                 
                 <br/>
                 
@@ -161,7 +139,33 @@
       }
     }
   });
+
        </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  document.getElementById('dropdownList').addEventListener('change', function() {
+    const selectedValue = this.value;
+  
+    if (selectedValue !== '-1') {
+      
+      $.ajax({
+        url: `/voter/details?part=${selectedValue}`,
+        method: 'GET',
+        success: function(data) {
+          $('#detailsContainer').html(data);
+        },
+        error: function(error) {
+          console.error('Error fetching data:', error);
+        }
+      });
+    } else {
+      $('#detailsContainer').empty(); // Clear details if 'All Booths' selected
+    }
+  });
+  </script>
+  
       <script type=text/html id=wpb-modifications></script> <script src=wp-content/cache/minify/3b479.js></script> <script id=contact-form-7-js-extra>var wpcf7 = {"api":{"root":"https:\/\/webredox.net\/demo\/wp\/stukram\/dark\/wp-json\/","namespace":"contact-form-7\/v1"},"cached":"1"};</script> <script src=wp-content/cache/minify/52358.js></script> <script id=wpb_composer_front_js-js-extra>var vcData = {"currentTheme":{"slug":"stukram"}};</script> <script src=wp-content/cache/minify/a266d.js></script> 
    </body>
    <!-- Mirrored from webredox.net/demo/wp/stukram/dark/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 26 Jun 2022 10:54:28 GMT -->
