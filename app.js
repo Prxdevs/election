@@ -16,7 +16,7 @@ const _ = require("lodash");
 //Configuring the enviroments file and turning it to constant
 require('dotenv/config');
 const CS = process.env.CONNECTION_STRING;
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5055;
 
 // Passport Config
 require('./build/passport')(passport);
